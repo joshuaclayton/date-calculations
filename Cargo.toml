@@ -1,0 +1,18 @@
+[package]
+name = "date-calculations"
+description = "Adjust dates relative to provided Chrono's NaiveDate"
+version = "0.1.0"
+authors = ["Joshua Clayton <joshua.clayton@gmail.com>"]
+edition = "2018"
+license = "MIT"
+categories = ["date-and-time"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+quickcheck = "0.9"
+quickcheck_macros = "0.8"
+num = "0.3"
