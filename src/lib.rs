@@ -1,3 +1,5 @@
+#![deny(missing_docs)]
+
 //! This crate provides helper functions for calculating shifts in Chrono's NaiveDate values for
 //! various periods (week, month, quarter, year) for common shifts in direction (beginning_of_*,
 //! end_of_*, previous_*, and next_*).
@@ -23,6 +25,9 @@ use chrono::prelude::*;
 
 // weeks
 
+/// Returns the beginning of the week relative to the provided date.
+///
+/// Weeks begin on Sunday.
 pub fn beginning_of_week(date: &NaiveDate) -> Option<NaiveDate> {
     if date.weekday() == Weekday::Sun {
         Some(date.clone())
@@ -32,26 +37,40 @@ pub fn beginning_of_week(date: &NaiveDate) -> Option<NaiveDate> {
     }
 }
 
+/// Returns the end of the week relative to the provided date.
+///
+/// Weeks end on Saturday.
 pub fn end_of_week(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_week(date).map(|d| d + chrono::Duration::days(6))
 }
 
+/// Returns the beginning of the next week.
+///
+/// Weeks begin on Sunday.
 pub fn next_week(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_week(date).map(|d| d + chrono::Duration::weeks(1))
 }
 
+/// Returns the end of the next week.
+///
+/// Weeks end on Saturday.
 pub fn previous_week(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_week(date).map(|d| d - chrono::Duration::weeks(1))
 }
 
+/// Returns the first day of the current month and year.
 pub fn beginning_of_month(date: &NaiveDate) -> Option<NaiveDate> {
     date.with_day(1)
 }
 
+/// Returns the last day of the current month and year.
 pub fn end_of_month(date: &NaiveDate) -> Option<NaiveDate> {
     next_month(date).map(|d| d - chrono::Duration::days(1))
 }
 
+/// Returns the first day of the next month.
+///
+/// If the current month is December, this will shift to the next year.
 pub fn next_month(date: &NaiveDate) -> Option<NaiveDate> {
     if date.month() == 12 {
         next_year(date)
@@ -60,6 +79,9 @@ pub fn next_month(date: &NaiveDate) -> Option<NaiveDate> {
     }
 }
 
+/// Returns the first day of the previous month.
+///
+/// If the current month is January, this will shift to the previous year.
 pub fn previous_month(date: &NaiveDate) -> Option<NaiveDate> {
     if date.month() == 1 {
         beginning_of_month(date)?
@@ -70,14 +92,24 @@ pub fn previous_month(date: &NaiveDate) -> Option<NaiveDate> {
     }
 }
 
+/// Returns the first day of the current quarter and year.
+///
+/// This will either be January 1, April 1, July 1, or October 1 of the current year.
 pub fn beginning_of_quarter(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_month(date)?.with_month(quarter_month(date))
 }
 
+/// Returns the last day of the current quarter and year.
+///
+/// This will either be March 31, June 30, September 30, or December 31 of the current year.
 pub fn end_of_quarter(date: &NaiveDate) -> Option<NaiveDate> {
     next_quarter(date).map(|d| d - chrono::Duration::days(1))
 }
 
+/// Returns the first day of the next quarter.
+///
+/// If the current date falls in the last quarter of the year, this will shift to the first quarter
+/// of the next year.
 pub fn next_quarter(date: &NaiveDate) -> Option<NaiveDate> {
     if date.month() >= 10 {
         beginning_of_year(date)?.with_year(date.year() + 1)
@@ -86,6 +118,10 @@ pub fn next_quarter(date: &NaiveDate) -> Option<NaiveDate> {
     }
 }
 
+/// Returns the first day of the previous quarter.
+///
+/// If the current date falls in the first quarter of the year, this will shift to the last quarter
+/// of the previous year.
 pub fn previous_quarter(date: &NaiveDate) -> Option<NaiveDate> {
     if date.month() < 4 {
         beginning_of_month(date)?
@@ -100,18 +136,22 @@ fn quarter_month(date: &NaiveDate) -> u32 {
     1 + 3 * ((date.month() - 1) / 3)
 }
 
+/// Returns the first day of the year (January 1) of the current year.
 pub fn beginning_of_year(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_month(date)?.with_month(1)
 }
 
+/// Returns the last day of the year (December 31) of the current year.
 pub fn end_of_year(date: &NaiveDate) -> Option<NaiveDate> {
     date.with_month(12)?.with_day(31)
 }
 
+/// Returns the first day of the year (January 1) of the next year.
 pub fn next_year(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_year(date)?.with_year(date.year() + 1)
 }
 
+/// Returns the first day of the year (January 1) of the previous year.
 pub fn previous_year(date: &NaiveDate) -> Option<NaiveDate> {
     beginning_of_year(date)?.with_year(date.year() - 1)
 }
