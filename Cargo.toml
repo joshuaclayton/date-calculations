@@ -2,7 +2,7 @@
 name = "date-calculations"
 description = "Adjust dates relative to provided Chrono's NaiveDate"
 repository = "https://github.com/joshuaclayton/date-calculations"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Joshua Clayton <joshua.clayton@gmail.com>"]
 edition = "2018"
 license = "MIT"
