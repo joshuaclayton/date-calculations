@@ -1,5 +1,8 @@
 # Date Calculations
 
+[![](https://img.shields.io/crates/v/date-calculations.svg)](https://crates.io/crates/date-calculations)
+[![](https://docs.rs/date-calculations/badge.svg)](https://docs.rs/date-calculations)
+
 This is a crate supporting relative date calculations for Chrono's [NaiveDate],
 most notably only Gregorian dates.
 
